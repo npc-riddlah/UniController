@@ -31,25 +31,25 @@ EN:
 Creating minimal, ready to fast programming automating\monitoring\both controller. Builded with HAL and ILI9341 driver (Casual Way).
 
 Which features ready:
-> GUI Draw Lib
-> > Page-Drawing
-> > > Menus
-> > > Data Tables
-> > Statusbars
-> > Input helpers
-> Input
-> > Not so good input worker
-> > Input modes
+- GUI Draw Lib
+    - Page-Drawing
+        - Menus
+        - Data Tables
+    - Statusbars
+    - Input helpers
+- Input
+    - Not so good input worker
+    - Input modes
 
 TODO Features:
-> GUI Draw Lib
-> > Bring the GUI lib out from this project (THESE RIGHT IN THE CRACKIGN MAIN.C!!! It's bad!)
-> > Charts drawing
-> > Bitmaps drawing
-> > Cyrillyc ILI9341 Fonts
-> Input
-> > Rewrite input worker using interrupts.
-> Repo
-> > Add schemes
-> Boards
-> > Completing of SMD Version with Display and mod-pcb-mini example.
+- GUI Draw Lib
+    - Bring the GUI lib out from this project (THESE RIGHT IN THE CRACKIGN MAIN.C!!! It's bad!)
+    - Charts drawing
+    - Bitmaps drawing
+    - Cyrillyc ILI9341 Fonts
+- Input
+    - Rewrite input worker using interrupts.
+- Repo
+    - Add schemes
+- Boards
+    - Completing of SMD Version with Display and mod-pcb-mini example.
