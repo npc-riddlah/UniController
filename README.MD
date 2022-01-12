@@ -48,7 +48,7 @@ TODO Features:
     - Bitmaps drawing
     - Cyrillyc ILI9341 Fonts
 - Input
-    - Rewrite input worker using interrupts.
+    - Rewrite input worker using interrupts
 - Repo
     - Add schemes
 - Boards
