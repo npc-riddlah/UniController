@@ -1,0 +1,15 @@
+main.c:76:5:main	16	static
+main.c:133:6:SystemClock_Config	72	static,ignoring_inline_asm
+main.c:171:13:MX_NVIC_Init	8	static
+main.c:186:13:MX_SPI1_Init	8	static,ignoring_inline_asm
+main.c:222:13:MX_DMA_Init	8	static
+main.c:235:13:MX_GPIO_Init	56	static
+main.c:280:6:screen_draw_page	424	static
+main.c:311:6:screen_draw_helper	48	static
+main.c:321:6:screen_draw_statusbar	80	static
+main.c:374:6:screen_draw_menu	56	static
+main.c:395:6:screen_draw_data	40	static
+main.c:407:6:screen_draw_data_block	40	static
+main.c:414:6:os_worker_buttons	16	static
+main.c:460:6:os_worker_modloader	0	static
+main.c:470:6:Error_Handler	0	static,ignoring_inline_asm
