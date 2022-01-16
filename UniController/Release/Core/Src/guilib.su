@@ -1,0 +1,9 @@
+guilib.c:8:6:screen_draw_page	432	static
+guilib.c:44:6:screen_draw_helper	48	static
+guilib.c:54:6:screen_draw_statusbar	24	static
+guilib.c:60:6:screen_draw_menu	56	static
+guilib.c:79:6:screen_draw_data	40	static
+guilib.c:91:6:screen_draw_data_block	40	static
+guilib.c:98:6:screen_draw_plaintext	0	static
+guilib.c:102:6:screen_draw_chart	0	static
+guilib.c:107:6:screen_draw_settings	0	static

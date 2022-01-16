@@ -21,11 +21,17 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "guilib.h"
+
+#include "stm32f1xx_hal.h"
 #include "ILI9341_STM32_Driver.h"
 #include "ILI9341_GFX.h"
-#include "theme.h"
-#include "l10n.h"
 #include "pins.h"
+#include "l10n.h"
+#include "theme.h"
+
+int id_page=0;
+int id_item=0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,10 +68,7 @@ static void MX_NVIC_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int id_page=0;
-int id_item=0;
-char str_id_page[6];
-char str_id_item[6];
+
 /* USER CODE END 0 */
 
 
@@ -85,14 +88,12 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -109,6 +110,7 @@ int main(void)
   ILI9341_FillScreen(BLACK);
   ILI9341_SetRotation(SCREEN_HORIZONTAL_2);
   ILI9341_DrawText("STARTING...", FONT4, 90, 110, BLACK, WHITE);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,10 +118,8 @@ int main(void)
   ILI9341_DrawRectangle(0, 0, 320, 240, COL_BG_PAGE);
   while (1)
   {
-	  itoa(id_page, str_id_page, PARAM_PAGE_COUNT);
-	  itoa(id_item, str_id_item, 10);
 	  os_worker_buttons(id_page);
-	  screen_draw_page(id_page);
+	  screen_draw_page(id_page, id_item);
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
   }
@@ -277,145 +277,12 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void screen_draw_page(int page) //TODO: Reorganize arrays into something better
-{
-	switch (page)
-	{
-	case 0:;
-		char txt_label0[2][PARAM_DATA_BLOCK_COUNT][25] = {{"memes", "pivo", "hitler", "nigger!", "kaef", "govno", "dudes", "pelmeni"},{"15%","0%","2%","0%","60%","3%","7%","10%"}};
-		screen_draw_data(txt_label0);
-	break;
-
-	case 1:;
-		char txt_label1[10][25] = {"memes", "pivo", "hitler", "nigger!", "piss on you!"};
-		screen_draw_menu(txt_label1, 5);
-	break;
-
-	case 2:
-		ILI9341_DrawText(L10N_PAG_NAM_MEMES1, FONT4, 10, 40, COL_TXT_PAGE, COL_BG_PAGE);
-		ILI9341_DrawText(L10N_PAG_NAM_MEMES2, FONT4, 10, 60, COL_TXT_PAGE, COL_BG_PAGE);
-	break;
-
-	case 3:;
-		char txt_label2[10][25] = {"welcome", "to", "my", "gachi", "dungeon", "master", "oooooh!", "MEMES!"};
-		screen_draw_menu(txt_label2, 8);
-	break;
-
-	default:
-		ILI9341_DrawText(L10N_ID_ERROR, FONT_PAGE, 10, 40, COL_TXT_PAGE, COL_BG_PAGE);
-	break;
-	}
-	screen_draw_statusbar(page);
-}
-
-void screen_draw_helper(char* txt_b1, char* txt_b2, char* txt_b3, char* txt_b4, char* txt_b5, char* txt_b6)
-{
-	ILI9341_DrawText(txt_b1, FONT_HELPER, POS_HELPER_B1, COL_TXT_HELPER, COL_BG_HELPER);
-	ILI9341_DrawText(txt_b2, FONT_HELPER, POS_HELPER_B2, COL_TXT_HELPER, COL_BG_HELPER);
-	ILI9341_DrawText(txt_b3, FONT_HELPER, POS_HELPER_B3, COL_TXT_HELPER, COL_BG_HELPER);
-	ILI9341_DrawText(txt_b4, FONT_HELPER, POS_HELPER_B4, COL_TXT_HELPER, COL_BG_HELPER);
-	ILI9341_DrawText(txt_b5, FONT_HELPER, POS_HELPER_B5, COL_TXT_HELPER, COL_BG_HELPER);
-	ILI9341_DrawText(txt_b6, FONT_HELPER, POS_HELPER_B6, COL_TXT_HELPER, COL_BG_HELPER);
-}
-
-void screen_draw_statusbar(uint8_t id_mode)
-{
-	char out[50];
-	ILI9341_DrawRectangle(0, 0, 320, PARAM_WIDTH_STATUSBAR, COL_BG_STATUSBAR);
-	switch (id_mode)
-	{
-	case 0:;
-		strcpy(out, L10N_BAR_DATA);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_PAGE);
-		strcat(out, ": ");
-		strcat(out, str_id_page);
-		strcat(out, " | ");
-		ILI9341_DrawText(out, FONT_STATUSBAR, 1, 1, COL_TXT_STATUSBAR, COL_BG_STATUSBAR);
-	break;
-	case 1:;
-		strcpy(out, L10N_BAR_MENU);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_PAGE);
-		strcat(out, ": ");
-		strcat(out, str_id_page);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_ITEM);
-		strcat(out, ": ");
-		strcat(out, str_id_item);
-		ILI9341_DrawText(out, FONT_STATUSBAR, 1, 1, COL_TXT_STATUSBAR, COL_BG_STATUSBAR);
-	break;
-	case 2:
-		strcpy(out, L10N_BAR_VER);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_PAGE);
-		strcat(out, ": ");
-		strcat(out, str_id_page);
-		ILI9341_DrawText(out, FONT_STATUSBAR, 1, 1, COL_TXT_STATUSBAR, COL_BG_STATUSBAR);
-	break;
-	case 3:;
-		strcpy(out, L10N_BAR_MENU);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_PAGE);
-		strcat(out, ": ");
-		strcat(out, str_id_page);
-		strcat(out, " | ");
-		strcat(out, L10N_BAR_ITEM);
-		strcat(out, ": ");
-		strcat(out, str_id_item);
-		ILI9341_DrawText(out, FONT_STATUSBAR, 1, 1, COL_TXT_STATUSBAR, COL_BG_STATUSBAR);
-	break;
-	default:
-		ILI9341_DrawText(L10N_ID_ERROR, FONT_STATUSBAR, 1, 1, COL_TXT_STATUSBAR, COL_BG_STATUSBAR);
-	break;
-	}
-}
-
-void screen_draw_menu(char txt_items[10][25], uint16_t arr_length)
-{
-
-	if (id_item>=arr_length) id_item=arr_length-1;
-	for (int y=0; y<arr_length; y++){
-		ILI9341_DrawHLine(0, (y*PARAM_WIDTH_MENUBAR)+PARAM_WIDTH_STATUSBAR, 320, COL_MENU_LINES);
-		if (y==id_item)
-		{
-			ILI9341_DrawRectangle(0, (y*PARAM_WIDTH_MENUBAR)+PARAM_WIDTH_STATUSBAR+1, 320, PARAM_WIDTH_MENUBAR-1, COL_BG_PAGE_SELECT);
-			ILI9341_DrawText(txt_items[y], FONT_MENU, 1, (y*PARAM_WIDTH_MENUBAR)+PARAM_WIDTH_STATUSBAR+1, COL_TXT_MENUBAR_SELECT, COL_BG_PAGE_SELECT);
-		}
-		else
-		{
-			ILI9341_DrawText(txt_items[y], FONT_MENU, 1, (y*PARAM_WIDTH_MENUBAR)+PARAM_WIDTH_STATUSBAR+1, COL_TXT_MENUBAR, COL_BG_PAGE);
-		}
-	}
-	ILI9341_DrawHLine(0, (arr_length*PARAM_WIDTH_MENUBAR)+PARAM_WIDTH_STATUSBAR, 320, COL_MENU_LINES);
-
-}
-
-//Rewrite it on "For" cycle please, fucking imbecil
-void screen_draw_data(char txt_items[2][PARAM_DATA_BLOCK_COUNT][25])
-{
-
-	for (int i=0; i<PARAM_DATA_BLOCK_COUNT/2; i++){
-		screen_draw_data_block(txt_items[0][i], txt_items[1][i], PARAM_DATA_BLOCK_SIZE, PARAM_DATA_BLOCK_SIZE, i*PARAM_DATA_BLOCK_SIZE, PARAM_WIDTH_STATUSBAR, BLACK);
-	}
-	for (int i=0; i<PARAM_DATA_BLOCK_COUNT/2; i++){
-		screen_draw_data_block(txt_items[0][i+PARAM_DATA_BLOCK_COUNT/2], txt_items[1][i+PARAM_DATA_BLOCK_COUNT/2], PARAM_DATA_BLOCK_SIZE, PARAM_DATA_BLOCK_SIZE, i*PARAM_DATA_BLOCK_SIZE, PARAM_WIDTH_STATUSBAR+PARAM_DATA_BLOCK_SIZE, BLACK);
-	}
-
-}
-
-void screen_draw_data_block(char* txt_item_label, char* txt_item_prop, uint16_t size_x, uint16_t size_y, uint16_t pos_x, uint16_t pos_y, uint16_t col_border){
-	ILI9341_DrawHollowRectangleCoord(pos_x, pos_y, pos_x+size_x, pos_y+size_y, col_border);
-	ILI9341_DrawText(txt_item_label, FONT_DATA_SMALL, pos_x+size_x/3, pos_y+5, COL_TXT_DATA_SMALL, COL_BG_DATA_SMALL);
-	ILI9341_DrawText(txt_item_prop, FONT_DATA_BIG, pos_x+size_x/3, pos_y+size_y/2, COL_TXT_DATA_BIG, COL_BG_DATA_BIG);
-}
 
 //Rewrite that shit please (Maybe EXTI?)
 void os_worker_buttons(uint8_t id_mode)
 {
-		switch (id_mode){
+		switch (id_mode){ //Here we can program buttons to react on screen
 		default:
-			screen_draw_helper(L10N_BUT_PAGE_PREV, L10N_BUT_SLEEP, L10N_BUT_UP, L10N_BUT_DOWN, L10N_BUT_PAGE_NEXT, L10N_BUT_OK);
 			if (HAL_GPIO_ReadPin(PIN_BUT1))
 			{
 				  id_page--;
@@ -455,6 +322,7 @@ void os_worker_buttons(uint8_t id_mode)
 		break;
 		}
 }
+//Rewrite it on "For" cycle please, fucking imbecil
 
 //Somehow..................
 void os_worker_modloader(void)
