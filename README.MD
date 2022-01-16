@@ -15,7 +15,6 @@ RU:
 
 Что ещё предстоит (Список будет расширяться):
 - Библиотека для рисования графики
-    - Вынести либу в отдельный проект (Сейчас вшит прямо в main.c! Это совсем не круто!)
     - Отрисовка графиков
     - Отрисовка битмапов
     - Поддержка кириллицы для ILI9341
@@ -43,7 +42,6 @@ Which features ready:
 
 TODO Features:
 - GUI Draw Lib
-    - Bring the GUI lib out from this project (THESE RIGHT IN THE CRACKIGN MAIN.C!!! It's bad!)
     - Charts drawing
     - Bitmaps drawing
     - Cyrillyc ILI9341 Fonts
